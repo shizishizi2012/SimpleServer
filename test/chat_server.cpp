@@ -1,9 +1,9 @@
-#include <iostream>
-#include <map>
 #include "Connection.h"
 #include "EventLoop.h"
-#include "TcpServer.h"
 #include "Socket.h"
+#include "TcpServer.h"
+#include <iostream>
+#include <map>
 
 int main() {
   // std::map<int, Connection *> clients;
@@ -31,9 +31,7 @@ int main() {
   //     }
   //   }
   // );
-    
+
   // loop->Loop();
   return 0;
 }
-
-

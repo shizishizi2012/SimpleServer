@@ -21,7 +21,7 @@
 #endif
 
 class Poller {
- public:
+public:
   DISALLOW_COPY_AND_MOVE(Poller);
   Poller();
   ~Poller();
@@ -31,7 +31,7 @@ class Poller {
 
   std::vector<Channel *> Poll(long timeout = -1) const;
 
- private:
+private:
   int fd_;
 
 #ifdef OS_LINUX

@@ -1,7 +1,8 @@
 /**
  * @file Socket.cpp
  * @author 冯岳松 (yuesong-feng@foxmail.com)
- * @brief 客户端、服务器共用 accept，connect都支持非阻塞式IO，但只是简单处理，如果情况太复杂可能会有意料之外的bug
+ * @brief 客户端、服务器共用
+ * accept，connect都支持非阻塞式IO，但只是简单处理，如果情况太复杂可能会有意料之外的bug
  * @version 0.1
  * @date 2022-01-04
  *
@@ -9,13 +10,13 @@
  *
  */
 #include "Socket.h"
-#include <unistd.h>
-#include <fcntl.h>
-#include <cstring>
-#include <cassert>
 #include <arpa/inet.h>
+#include <cassert>
+#include <cstring>
+#include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
+#include <unistd.h>
 
 Socket::Socket() : fd_(-1) {}
 
@@ -51,7 +52,9 @@ RC Socket::SetNonBlocking() const {
   return RC_SUCCESS;
 }
 
-bool Socket::IsNonBlocking() const { return (fcntl(fd_, F_GETFL) & O_NONBLOCK) != 0; }
+bool Socket::IsNonBlocking() const {
+  return (fcntl(fd_, F_GETFL) & O_NONBLOCK) != 0;
+}
 
 size_t Socket::RecvBufSize() const {
   size_t size = -1;

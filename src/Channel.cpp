@@ -21,7 +21,9 @@ const short Channel::READ_EVENT = 1;
 const short Channel::WRITE_EVENT = 2;
 const short Channel::ET = 4;
 
-Channel::Channel(int fd, EventLoop *loop) : fd_(fd), loop_(loop), listen_events_(0), ready_events_(0), exist_(false) {}
+Channel::Channel(int fd, EventLoop *loop)
+    : fd_(fd), loop_(loop), listen_events_(0), ready_events_(0), exist_(false) {
+}
 
 Channel::~Channel() { loop_->DeleteChannel(this); }
 
@@ -69,5 +71,9 @@ void Channel::set_ready_event(short ev) {
   }
 }
 
-void Channel::set_read_callback(std::function<void()> const &callback) { read_callback_ = std::move(callback); }
-void Channel::set_write_callback(std::function<void()> const &callback) { write_callback_ = std::move(callback); }
+void Channel::set_read_callback(std::function<void()> const &callback) {
+  read_callback_ = std::move(callback);
+}
+void Channel::set_write_callback(std::function<void()> const &callback) {
+  write_callback_ = std::move(callback);
+}

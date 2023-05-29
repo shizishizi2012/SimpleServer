@@ -9,12 +9,12 @@
  *
  */
 #pragma once
+#include "common.h"
 #include <functional>
 #include <memory>
-#include "common.h"
 
 class Connection {
- public:
+public:
   enum State {
     Invalid = 0,
     Connecting,
@@ -43,14 +43,14 @@ class Connection {
   void onConnect(std::function<void()> fn);
   void onMessage(std::function<void()> fn);
 
- private:
+private:
   void Business();
   RC ReadNonBlocking();
   RC WriteNonBlocking();
   RC ReadBlocking();
   RC WriteBlocking();
 
- private:
+private:
   std::unique_ptr<Socket> socket_;
   std::unique_ptr<Channel> channel_;
 

@@ -10,11 +10,11 @@
  */
 #include "Poller.h"
 
-#include <unistd.h>
-#include <cstring>
 #include "Channel.h"
 #include "Socket.h"
 #include "util.h"
+#include <cstring>
+#include <unistd.h>
 
 #define MAX_EVENTS 1000
 
@@ -69,16 +69,19 @@ void Poller::UpdateChannel(Channel *ch) const {
     ev.events |= EPOLLET;
   }
   if (!ch->exist()) {
-    ErrorIf(epoll_ctl(fd_, EPOLL_CTL_ADD, sockfd, &ev) == -1, "epoll add error");
+    ErrorIf(epoll_ctl(fd_, EPOLL_CTL_ADD, sockfd, &ev) == -1,
+            "epoll add error");
     ch->set_exist();
   } else {
-    ErrorIf(epoll_ctl(fd_, EPOLL_CTL_MOD, sockfd, &ev) == -1, "epoll modify error");
+    ErrorIf(epoll_ctl(fd_, EPOLL_CTL_MOD, sockfd, &ev) == -1,
+            "epoll modify error");
   }
 }
 
 void Poller::DeleteChannel(Channel *ch) const {
   int sockfd = ch->fd();
-  ErrorIf(epoll_ctl(fd_, EPOLL_CTL_DEL, sockfd, nullptr) == -1, "epoll delete error");
+  ErrorIf(epoll_ctl(fd_, EPOLL_CTL_DEL, sockfd, nullptr) == -1,
+          "epoll delete error");
   ch->set_exist(false);
 }
 

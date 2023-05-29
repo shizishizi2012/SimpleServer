@@ -9,15 +9,14 @@
  *
  */
 #pragma once
-#include <functional>
 #include "common.h"
+#include <functional>
 
 class Channel {
- public:
+public:
   DISALLOW_COPY_AND_MOVE(Channel);
   Channel(int fd, EventLoop *loop);
   ~Channel();
-
 
   void HandleEvent() const;
   void EnableRead();
@@ -38,7 +37,7 @@ class Channel {
   static const short WRITE_EVENT;
   static const short ET;
 
- private:
+private:
   int fd_;
   EventLoop *loop_;
   short listen_events_;

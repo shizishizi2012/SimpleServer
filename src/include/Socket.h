@@ -10,11 +10,11 @@
  */
 
 #pragma once
-#include <string>
 #include "common.h"
+#include <string>
 
 class Socket {
- public:
+public:
   DISALLOW_COPY_AND_MOVE(Socket);
   Socket();
   ~Socket();
@@ -30,6 +30,6 @@ class Socket {
   bool IsNonBlocking() const;
   size_t RecvBufSize() const;
 
- private:
+private:
   int fd_;
 };

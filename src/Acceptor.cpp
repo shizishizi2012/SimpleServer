@@ -10,12 +10,12 @@
  */
 #include "Acceptor.h"
 
-#include <cassert>
-#include <unistd.h>
-#include <fcntl.h>
-#include <utility>
 #include "Channel.h"
 #include "Socket.h"
+#include <cassert>
+#include <fcntl.h>
+#include <unistd.h>
+#include <utility>
 
 Acceptor::Acceptor(EventLoop *loop) {
   socket_ = std::make_unique<Socket>();
@@ -32,19 +32,21 @@ Acceptor::Acceptor(EventLoop *loop) {
 
 Acceptor::~Acceptor() {}
 
-RC Acceptor::AcceptConnection() const{
+RC Acceptor::AcceptConnection() const {
   int clnt_fd = -1;
-  if( socket_->Accept(clnt_fd) != RC_SUCCESS ) {
+  if (socket_->Accept(clnt_fd) != RC_SUCCESS) {
     return RC_ACCEPTOR_ERROR;
   }
   // TODO: remove
-  fcntl(clnt_fd, F_SETFL, fcntl(clnt_fd, F_GETFL) | O_NONBLOCK);  // 新接受到的连接设置为非阻塞式
+  fcntl(clnt_fd, F_SETFL,
+        fcntl(clnt_fd, F_GETFL) | O_NONBLOCK); // 新接受到的连接设置为非阻塞式
   if (new_connection_callback_) {
     new_connection_callback_(clnt_fd);
   }
   return RC_SUCCESS;
 }
 
-void Acceptor::set_new_connection_callback(std::function<void(int)> const &callback) {
+void Acceptor::set_new_connection_callback(
+    std::function<void(int)> const &callback) {
   new_connection_callback_ = std::move(callback);
 }

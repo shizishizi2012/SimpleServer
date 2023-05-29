@@ -9,9 +9,9 @@
  *
  */
 #include "EventLoop.h"
-#include <vector>
 #include "Channel.h"
 #include "Poller.h"
+#include <vector>
 
 EventLoop::EventLoop() { poller_ = std::make_unique<Poller>(); }
 

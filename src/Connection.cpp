@@ -9,12 +9,12 @@
  *
  */
 #include "Connection.h"
-#include <unistd.h>
-#include <cassert>
-#include <cstring>
 #include "Buffer.h"
 #include "Channel.h"
 #include "Socket.h"
+#include <cassert>
+#include <cstring>
+#include <unistd.h>
 
 Connection::Connection(int fd, EventLoop *loop) {
   socket_ = std::make_unique<Socket>();
@@ -62,19 +62,22 @@ RC Connection::Write() {
 
 RC Connection::ReadNonBlocking() {
   int sockfd = socket_->fd();
-  char buf[1024];  // 这个buf大小无所谓
-  while (true) {   // 使用非阻塞IO，读取客户端buffer，一次读取buf大小数据，直到全部读取完毕
+  char buf[1024]; // 这个buf大小无所谓
+  while (
+      true) { // 使用非阻塞IO，读取客户端buffer，一次读取buf大小数据，直到全部读取完毕
     memset(buf, 0, sizeof(buf));
     ssize_t bytes_read = read(sockfd, buf, sizeof(buf));
     if (bytes_read > 0) {
       read_buf_->Append(buf, bytes_read);
-    } else if (bytes_read == -1 && errno == EINTR) {  // 程序正常中断、继续读取
+    } else if (bytes_read == -1 && errno == EINTR) { // 程序正常中断、继续读取
       printf("continue reading\n");
       continue;
     } else if (bytes_read == -1 &&
-               ((errno == EAGAIN) || (errno == EWOULDBLOCK))) {  // 非阻塞IO，这个条件表示数据全部读取完毕
+               ((errno == EAGAIN) ||
+                (errno ==
+                 EWOULDBLOCK))) { // 非阻塞IO，这个条件表示数据全部读取完毕
       break;
-    } else if (bytes_read == 0) {  // EOF，客户端断开连接
+    } else if (bytes_read == 0) { // EOF，客户端断开连接
       printf("read EOF, client fd %d disconnected\n", sockfd);
       state_ = State::Closed;
       Close();
@@ -136,7 +139,8 @@ RC Connection::ReadBlocking() {
 RC Connection::WriteBlocking() {
   // 没有处理send_buffer_数据大于TCP写缓冲区，的情况，可能会有bug
   int sockfd = socket_->fd();
-  ssize_t bytes_write = write(sockfd, send_buf_->buf().c_str(), send_buf_->Size());
+  ssize_t bytes_write =
+      write(sockfd, send_buf_->buf().c_str(), send_buf_->Size());
   if (bytes_write == -1) {
     printf("Other error on blocking client fd %d\n", sockfd);
     state_ = State::Closed;
@@ -155,7 +159,9 @@ void Connection::Business() {
   on_recv_(this);
 }
 
-void Connection::set_delete_connection(std::function<void(int)> const &fn) { delete_connectioin_ = std::move(fn); }
+void Connection::set_delete_connection(std::function<void(int)> const &fn) {
+  delete_connectioin_ = std::move(fn);
+}
 
 void Connection::set_on_recv(std::function<void(Connection *)> const &fn) {
   on_recv_ = std::move(fn);

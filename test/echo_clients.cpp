@@ -1,6 +1,6 @@
-#include <unistd.h>
-#include <iostream>
 #include "pine.h"
+#include <iostream>
+#include <unistd.h>
 
 void OneClient(int msgs, int wait) {
   Socket *sock = new Socket();
@@ -19,7 +19,8 @@ void OneClient(int msgs, int wait) {
       break;
     }
     conn->Read();
-    std::cout << "msg count " << count++ << ": " << conn->read_buf()->c_str() << std::endl;
+    std::cout << "msg count " << count++ << ": " << conn->read_buf()->c_str()
+              << std::endl;
   }
   delete sock;
   delete conn;
@@ -33,21 +34,21 @@ int main(int argc, char *argv[]) {
   const char *optstring = "t:m:w:";
   while ((o = getopt(argc, argv, optstring)) != -1) {
     switch (o) {
-      case 't':
-        threads = std::stoi(optarg);
-        break;
-      case 'm':
-        msgs = std::stoi(optarg);
-        break;
-      case 'w':
-        wait = std::stoi(optarg);
-        break;
-      case '?':
-        printf("error optopt: %c\n", optopt);
-        printf("error opterr: %d\n", opterr);
-        break;
-      default:
-        break;
+    case 't':
+      threads = std::stoi(optarg);
+      break;
+    case 'm':
+      msgs = std::stoi(optarg);
+      break;
+    case 'w':
+      wait = std::stoi(optarg);
+      break;
+    case '?':
+      printf("error optopt: %c\n", optopt);
+      printf("error opterr: %d\n", opterr);
+      break;
+    default:
+      break;
     }
   }
 

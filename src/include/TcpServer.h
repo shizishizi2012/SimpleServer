@@ -15,7 +15,7 @@
 #include <vector>
 
 class TcpServer {
- public:
+public:
   DISALLOW_COPY_AND_MOVE(TcpServer);
   TcpServer();
   ~TcpServer();
@@ -27,7 +27,7 @@ class TcpServer {
   void onConnect(std::function<void(Connection *)> fn);
   void onRecv(std::function<void(Connection *)> fn);
 
- private:
+private:
   std::unique_ptr<EventLoop> main_reactor_;
   std::unique_ptr<Acceptor> acceptor_;
 
